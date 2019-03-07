@@ -2,26 +2,47 @@
 #define UTILS_H
 
 #include <type_traits>
-#include <iostream>
+#include <string>
 #include <vector>
+#include <list>
+#include <iostream>
+
+template <typename T>
+struct is_container : std::false_type { };
+
+template <typename... Ts> struct is_container<std::list<Ts...> > : std::true_type { };
+template <typename... Ts> struct is_container<std::vector<Ts...> > : std::true_type { };
 
 
-class IPAddress {
-    private:
-        std::vector<uint8_t> ip;
+template<typename T>
+typename std::enable_if<std::is_integral<T>::value, T>::type
+print(std::ostream& out, const T&& value) {
+    for (size_t i = sizeof(T); i != 0; --i) {
+        uint8_t byte = value >> ((i - 1) * 8);
+        if (i != sizeof(T)) {
+            out << '.';
+        }
+        out << (int)byte;
+    }
+    return value;
+}
 
-    public:
-        template<typename T,
-        typename = typename std::enable_if<std::is_integral<T>::value, T>::type>
-        IPAddress(const T& value) {
-            this->ip.reserve(sizeof(value));
-            for (size_t i = 0; i < sizeof(value); i++) {
-                uint8_t byte = value >> (i * 8);
-                this->ip.insert(this->ip.cend() - i, byte);
-            }
-        } 
 
-        friend std::ostream& operator << (std::ostream& out, const IPAddress& o);
-};
+std::string print(std::ostream& out, const std::string& value) {
+    out << value;
+    return value;
+}
+
+template<typename T>
+typename std::enable_if<is_container<T>::value, T>::type
+print(std::ostream& out, const T&& value) {
+    for(auto it = value.cbegin(); it != value.cend(); ++it) {
+        if (it != value.cbegin()) {
+            out << '.';
+        }
+        out << *it;
+    }
+    return value;
+}
 
 #endif

@@ -1,19 +1,27 @@
 #include <iostream>
+#include <string>
 #include <vector>
+#include <list>
 
 #include "utils.h"
 #include "version.h"
 
 
 int main() {
-    IPAddress ip1{(char)-1};
-    IPAddress ip2{(short)0};
-    IPAddress ip3{(int)2130706433};
-    IPAddress ip4{(long)8875824491850138409};
-    
-    std::cout << ip1 << std::endl;
-    std::cout << ip2 << std::endl;
-    std::cout << ip3 << std::endl;
-    std::cout << ip4 << std::endl;
+    print(std::cout, char(-1));
+    std::cout << std::endl;
+    print(std::cout, short(0));
+    std::cout << std::endl;
+    print(std::cout, int(2130706433));
+    std::cout << std::endl;
+    print(std::cout, long(8875824491850138409));
+    std::cout << std::endl;
+    print(std::cout, std::string{"127.0.0.1"});
+    std::cout << std::endl;
+    print(std::cout, std::vector<int>{1, 2, 3, 4});
+    std::cout << std::endl;
+    print(std::cout, std::list<int>{4, 3, 2, 1});
+    std::cout << std::endl;
+
     return 0;
 }

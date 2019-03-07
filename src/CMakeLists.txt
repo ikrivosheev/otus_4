@@ -2,7 +2,7 @@ configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 
 add_executable(print_ip main.cpp)
 
-add_library(utils version.cpp utils.cpp)
+add_library(utils version.cpp)
 
 set_target_properties(print_ip utils PROPERTIES
     CXX_STANDARD 14
