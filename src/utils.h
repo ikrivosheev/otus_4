@@ -15,7 +15,7 @@ template <typename... Ts> struct is_container<std::vector<Ts...> > : std::true_t
 
 
 template<typename T>
-typename std::enable_if<std::is_integral<T>::value, T>::type
+typename std::enable_if<std::is_integral<T>::value, void>::type
 print(std::ostream& out, const T&& value) {
     for (size_t i = sizeof(T); i != 0; --i) {
         uint8_t byte = value >> ((i - 1) * 8);
@@ -24,17 +24,15 @@ print(std::ostream& out, const T&& value) {
         }
         out << (int)byte;
     }
-    return value;
 }
 
 
-std::string print(std::ostream& out, const std::string& value) {
+void print(std::ostream& out, const std::string& value) {
     out << value;
-    return value;
 }
 
 template<typename T>
-typename std::enable_if<is_container<T>::value, T>::type
+typename std::enable_if<is_container<T>::value, void>::type
 print(std::ostream& out, const T&& value) {
     for(auto it = value.cbegin(); it != value.cend(); ++it) {
         if (it != value.cbegin()) {
@@ -42,7 +40,6 @@ print(std::ostream& out, const T&& value) {
         }
         out << *it;
     }
-    return value;
 }
 
 #endif
