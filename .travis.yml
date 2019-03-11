@@ -1,10 +1,17 @@
 dist: xenial
 language: cpp 
+addons:
+  apt:
+    packages:
+      - doxygen
+        
 script:
 - cmake .
 - cmake --build .
 - cmake --build . --target test
 - cmake --build . --target package
+- doxygen Doxyfile
+
 deploy:
 - provider: script
   skip_cleanup: true
@@ -15,6 +22,7 @@ deploy:
   github-token: $GITHUB_TOKEN
   committer-from-gh: true
   repo: ikrivosheev/ikrivosheev.githab.io
+  local_dir: doxygen/html
   target-branch: master
   on:
     branch: master
